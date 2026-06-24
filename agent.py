@@ -14,9 +14,13 @@ class AgentState(TypedDict):
 def create_agent():
     """Create a simple LangGraph agent for pothole detection chat"""
     
-    # Initialize LLM with Ollama
+    # Use OLLAMA_HOST env var for remote Ollama (e.g. Ollama Cloud or self-hosted)
+    # Defaults to localhost for local development
+    ollama_host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+    
     llm = ChatOllama(
-        model="gemma4:31b-cloud",
+        model=os.environ.get("OLLAMA_MODEL", "gemma3:1b"),
+        base_url=ollama_host,
         temperature=0.7
     )
     
@@ -72,4 +76,4 @@ def chat_with_agent(message: str, detection_context: dict = None):
         response = result["messages"][-1].content
         return response
     except Exception as e:
-        return f"Error: {str(e)}. Please make sure Ollama is running and the model is installed."
+        return f"Error: {str(e)}. Please make sure the Ollama server is reachable."
