@@ -13,8 +13,7 @@ RUN apt-get update \
         libglib2.0-0 \
         libgomp1 \
         libxcb1 \
-        libgl1-mesa-glx \
-        libglib2.0-0 \
+        libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
